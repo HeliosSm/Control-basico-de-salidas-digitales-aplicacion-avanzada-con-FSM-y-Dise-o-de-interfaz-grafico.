@@ -1,0 +1,100 @@
+#include <Controllino.h>
+
+// Pines de LEDs en orden espiral
+const int ledPins[] = {
+  CONTROLLINO_D0, CONTROLLINO_D6, CONTROLLINO_D12,
+  CONTROLLINO_D13, CONTROLLINO_D14, CONTROLLINO_D8,
+  CONTROLLINO_D2, CONTROLLINO_D1, CONTROLLINO_D7,
+  CONTROLLINO_D0 // extra para evitar error al final
+};
+
+// Pines de botones
+const int boton_normal = CONTROLLINO_I16;
+const int boton_inverso = CONTROLLINO_I17;
+const int boton_reset = CONTROLLINO_I18;
+
+// Modos de operación posibles
+enum Modo { APAGADO, NORMAL, INVERSO };
+
+// Estructura para almacenar estado del sistema
+struct Sistema {
+  Modo modo;
+  int indice;
+  unsigned long t_prev;
+};
+
+Sistema sistema;
+const int tam = 9;
+
+void setup() {
+  for (int i = 0; i <= tam; i++) {
+    pinMode(ledPins[i], OUTPUT);       // LEDs como salida
+    digitalWrite(ledPins[i], LOW);     // Apagados al inicio
+  }
+
+  pinMode(boton_normal, INPUT);        // Botones como entrada
+  pinMode(boton_inverso, INPUT);
+  pinMode(boton_reset, INPUT);
+
+  sistema.modo = APAGADO;              // Estado inicial
+  sistema.indice = 0;
+  sistema.t_prev = millis();
+}
+
+void loop() {
+  unsigned long t_actual = millis();
+
+  if (digitalRead(boton_normal) == HIGH) {
+    sistema.modo = NORMAL;             // Activa modo espiral normal
+    sistema.indice = 0;
+    apagarTodos();
+    sistema.t_prev = t_actual;
+  }
+
+  if (digitalRead(boton_inverso) == HIGH) {
+    sistema.modo = INVERSO;            // Activa modo inverso
+    sistema.indice = 0;
+    apagarTodos();
+    sistema.t_prev = t_actual;
+  }
+
+  if (digitalRead(boton_reset) == HIGH) {
+    sistema.modo = APAGADO;            // Apaga todo
+    sistema.indice = 0;
+    apagarTodos();
+  }
+
+  if (sistema.modo != APAGADO && t_actual - sistema.t_prev >= 500) {
+    sistema.t_prev = t_actual;
+
+    // Apaga LED anterior
+    if (sistema.indice > 0) {
+      int prevIndex = (sistema.modo == NORMAL)
+                    ? sistema.indice - 1
+                    : tam - sistema.indice;
+      if (sistema.indice > 8) sistema.indice = 0;
+      digitalWrite(ledPins[prevIndex], LOW);
+    }
+
+    // Enciende LED actual
+    int idx = (sistema.modo == NORMAL)
+            ? sistema.indice
+            : tam - 1 - sistema.indice;
+
+    digitalWrite(ledPins[idx], HIGH);
+    sistema.indice++;
+
+    // Reinicia secuencia
+    if (sistema.indice > tam) {
+      sistema.indice = 0;
+      apagarTodos();
+    }
+  }
+}
+
+// Apaga todos los LEDs
+void apagarTodos() {
+  for (int i = 0; i < tam; i++) {
+    digitalWrite(ledPins[i], LOW);
+  }
+}
