@@ -1,0 +1,87 @@
+#include <Controllino.h>
+
+// Estados de los semáforos
+enum Estado {
+  A_VERDE, A_AMARILLO,
+  B_VERDE, B_AMARILLO
+};
+
+// Estructura para agrupar luces de cada semáforo
+struct Semaforo {
+  int rojo;
+  int amarillo;
+  int verde;
+};
+
+// Asignación de pines del tablero
+Semaforo semA = {CONTROLLINO_D0, CONTROLLINO_D1, CONTROLLINO_D2};
+Semaforo semB = {CONTROLLINO_D6, CONTROLLINO_D7, CONTROLLINO_D8};
+
+Estado estado_actual = A_VERDE;    // Estado inicial
+unsigned long t_prev = 0;
+unsigned long intervalo = 0;
+
+void setup() {
+  // Configurar pines como salida
+  pinMode(semA.rojo, OUTPUT);
+  pinMode(semA.amarillo, OUTPUT);
+  pinMode(semA.verde, OUTPUT);
+  pinMode(semB.rojo, OUTPUT);
+  pinMode(semB.amarillo, OUTPUT);
+  pinMode(semB.verde, OUTPUT);
+
+  setEstado(A_VERDE);              // Activar estado inicial
+}
+
+void loop() {
+  unsigned long t_actual = millis();
+
+  if (t_actual - t_prev >= intervalo) {
+    // Cambio de estado según lógica FSM
+    switch (estado_actual) {
+      case A_VERDE:     setEstado(A_AMARILLO); break;
+      case A_AMARILLO:  setEstado(B_VERDE);    break;
+      case B_VERDE:     setEstado(B_AMARILLO); break;
+      case B_AMARILLO:  setEstado(A_VERDE);    break;
+    }
+  }
+}
+
+// Función para cambiar el estado de la FSM
+void setEstado(Estado nuevoEstado) {
+  apagarSemaforo(semA);
+  apagarSemaforo(semB);
+
+  switch (nuevoEstado) {
+    case A_VERDE:
+      digitalWrite(semA.verde, HIGH);
+      digitalWrite(semB.rojo, HIGH);
+      intervalo = 5000; // 5 segundos
+      break;
+    case A_AMARILLO:
+      digitalWrite(semA.amarillo, HIGH);
+      digitalWrite(semB.rojo, HIGH);
+      intervalo = 2000;
+      break;
+    case B_VERDE:
+      digitalWrite(semA.rojo, HIGH);
+      digitalWrite(semB.verde, HIGH);
+      intervalo = 5000;
+      break;
+    case B_AMARILLO:
+      digitalWrite(semA.rojo, HIGH);
+      digitalWrite(semB.amarillo, HIGH);
+      intervalo = 2000;
+      break;
+  }
+
+  estado_actual = nuevoEstado;
+  t_prev = millis();
+}
+
+// Apaga los tres LEDs de un semáforo
+void apagarSemaforo(Semaforo s) {
+  digitalWrite(s.rojo, LOW);
+  digitalWrite(s.amarillo, LOW);
+  digitalWrite(s.verde, LOW);
+}
