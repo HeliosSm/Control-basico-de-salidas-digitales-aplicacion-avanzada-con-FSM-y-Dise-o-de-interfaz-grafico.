@@ -1,8 +1,69 @@
-# Control-b-sico-de-salidas-digitales-y-aplicaci-n-avanzada-con-FSM.
-Este repositorio contiene el desarrollo completo de la práctica "Control básico de salidas digitales y aplicación avanzada con FSM", realizada con el Controllino Mega utilizando el entorno Arduino IDE.
+# Control básico de salidas digitales y aplicación avanzada con FSM
 
-El objetivo principal es controlar una matriz de LEDs a través de botones físicos en modos normal e inverso, y simular un sistema de semáforos utilizando una máquina de estados finita (FSM). Se implementa programación estructurada en C++, utilizando estructuras enum, struct, y temporización no bloqueante con millis() para lograr una ejecución fluida y precisa.
+Este repositorio documenta el desarrollo de la práctica 2: **Control básico de salidas digitales y aplicación avanzada con FSM**, utilizando el **Controllino Mega** como plataforma de automatización y el entorno **Arduino IDE** para la programación.
 
-El código se encuentra organizado por secciones (Parte A y Parte B) e incluye documentación interna, imágenes de referencia y un informe técnico en formato IEEE. Este proyecto busca fortalecer habilidades en automatización digital, diseño de FSMs y control de procesos embebidos, aplicables en entornos industriales reales.
+La práctica se divide en dos partes:
 
-Realizado por: Erick Ramón - Martín Vinces
+- **Parte A**: Control de una matriz de LEDs en forma de espiral mediante tres botones físicos.
+- **Parte B**: Simulación de un sistema de semáforos coordinados mediante una Máquina de Estados Finita (FSM).
+
+---
+
+## 🛠️ Requisitos
+
+- **Controllino Mega** con conexión USB
+- **Arduino IDE** configurado con la librería oficial de Controllino:
+  [https://www.controllino.com/board-library-setup-in-arduino-ide/](https://www.controllino.com/board-library-setup-in-arduino-ide/)
+- Cable USB tipo B
+- Tablero de control con LEDs y botones precableados
+
+---
+
+## 🚦 Parte A - Control de LEDs en Espiral
+
+Se controla una matriz 3x3 de LEDs con tres botones:
+
+- Botón 1: activa secuencia espiral en sentido horario.
+- Botón 2: activa secuencia espiral en sentido antihorario.
+- Botón 3: reinicia y apaga todos los LEDs.
+
+### Características técnicas:
+- Uso de punteros y arreglos para el manejo de salidas.
+- FSM definida mediante `enum` y `struct`.
+- Temporización no bloqueante con `millis()`.
+
+---
+
+## 🚥 Parte B - Simulación de Semáforo FSM
+
+Simulación de dos semáforos perpendiculares que alternan el paso de forma coordinada.
+
+### Estados definidos:
+- A\_VERDE → A\_AMARILLO → B\_VERDE → B\_AMARILLO
+
+### Características:
+- Exclusión de luces verdes simultáneas.
+- Transiciones cronometradas.
+- Código modular y reutilizable con funciones `setEstado()` y `apagarSemaforo()`.
+
+---
+
+## 📚 Referencias
+
+- [Controllino Mega - Página oficial](https://www.controllino.com/)
+- [Guía del tablero de control (PDF del docente)](https://drive.google.com/...)
+- [Documentación FSM en C++](https://en.cppreference.com/w/cpp/language/enum)
+
+---
+
+## ✍️ Autores
+
+Erick Ramón - Martin Vinces
+Estudiantes de Ingeniería en Telecomunicaciones.
+Proyecto realizado para el curso de Contról Digital.
+
+---
+
+## 📄 Licencia
+
+Este proyecto se distribuye con fines educativos. El contenido puede ser reutilizado con la debida atribución.
