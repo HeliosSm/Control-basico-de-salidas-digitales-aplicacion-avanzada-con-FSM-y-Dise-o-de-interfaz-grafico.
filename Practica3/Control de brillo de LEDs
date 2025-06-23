@@ -1,0 +1,77 @@
+#include <Controllino.h>
+#include "Stone_HMI_Define.h"
+#include "Procesar_HMI.h"
+
+// Pines asignados para los dos LEDs de salida
+const int led1 = CONTROLLINO_D0;
+const int led2 = CONTROLLINO_D1;
+
+// Pines de botones físicos para activar o desactivar cada LED
+const int btn1 = CONTROLLINO_I16;
+const int btn2 = CONTROLLINO_I17;
+
+int pwmValue1 = 0, pwmValue2 = 0;       // Valores de PWM (0 a 255)
+float duty1 = 0, duty2 = 0;             // Duty cycle leído desde el HMI (0 a 100)
+
+// Estado actual de cada LED (ON/OFF)
+bool estadoLED1 = false;
+bool estadoLED2 = false;
+
+// Estado anterior de los botones (para detectar flanco de bajada)
+bool prevBtn1State = HIGH;
+bool prevBtn2State = HIGH;
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(115200); // Comunicación serial con el HMI STONE
+
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(btn1, INPUT);
+  pinMode(btn2, INPUT);
+
+  HMI_init(); // Inicializa estructura de recepción de datos del HMI
+
+  // Inicializa ambos SpinBox del HMI con valor 0 (reset visual)
+  Stone_HMI_Set_Value("spin_box", "spin_box1", NULL, 0);
+  Stone_HMI_Set_Value("spin_box", "spin_box2", NULL, 0);
+}
+
+void loop() {
+  // Lee el estado actual de los botones
+  bool btn1State = digitalRead(btn1);
+  bool btn2State = digitalRead(btn2);
+
+  // Detecta flanco de bajada en botón 1 para cambiar estado del LED 1
+  if (prevBtn1State == HIGH && btn1State == LOW) {
+    estadoLED1 = !estadoLED1;
+  }
+  prevBtn1State = btn1State;
+
+  // Lo mismo para botón 2 y LED 2
+  if (prevBtn2State == HIGH && btn2State == LOW) {
+    estadoLED2 = !estadoLED2;
+  }
+  prevBtn2State = btn2State;
+
+  // Lee los valores del HMI (porcentaje de duty cycle)
+  duty1 = HMI_get_value("spin_box", "spin_box1");
+  duty2 = HMI_get_value("spin_box", "spin_box2");
+
+  // Si el valor está en el rango permitido, lo mapea a rango PWM (0–255)
+  if (duty1 >= 0 && duty1 <= 100) {
+    pwmValue1 = map(duty1, 0, 100, 0, 255);
+    analogWrite(led1, estadoLED1 ? pwmValue1 : 0); // Aplica PWM si LED está activado
+  }
+
+  if (duty2 >= 0 && duty2 <= 100) {
+    pwmValue2 = map(duty2, 0, 100, 0, 255);
+    analogWrite(led2, estadoLED2 ? pwmValue2 : 0);
+  }
+
+  // Muestra por serial el estado y valor PWM de ambos LEDs
+  Serial.print("LED1: "); Serial.print(estadoLED1 ? "ON" : "OFF");
+  Serial.print(" PWM: "); Serial.print(pwmValue1);
+  Serial.print(" | LED2: "); Serial.print(estadoLED2 ? "ON" : "OFF");
+  Serial.print(" PWM: "); Serial.println(pwmValue2);
+}
