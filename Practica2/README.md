@@ -27,7 +27,7 @@ Se controla una matriz 3x3 de LEDs con tres botones:
 - Botón 2: activa secuencia espiral en sentido antihorario.
 - Botón 3: reinicia y apaga todos los LEDs.
 - La figura muestra la maquina de estados para esta parte
-- 
+- ![Maquina de estados para el espiral](espiral.jpg)
 
 
 ### Características técnicas:
