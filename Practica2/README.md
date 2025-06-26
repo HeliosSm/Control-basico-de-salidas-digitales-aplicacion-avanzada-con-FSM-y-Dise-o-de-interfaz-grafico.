@@ -26,6 +26,9 @@ Se controla una matriz 3x3 de LEDs con tres botones:
 - Botón 1: activa secuencia espiral en sentido horario.
 - Botón 2: activa secuencia espiral en sentido antihorario.
 - Botón 3: reinicia y apaga todos los LEDs.
+- La figura muestra la maquina de estados para esta parte
+- 
+
 
 ### Características técnicas:
 - Uso de punteros y arreglos para el manejo de salidas.
@@ -40,6 +43,8 @@ Simulación de dos semáforos perpendiculares que alternan el paso de forma coor
 
 ### Estados definidos:
 - A\_VERDE → A\_AMARILLO → B\_VERDE → B\_AMARILLO
+- La figura muestra la maquina de estados para esta parte
+- 
 
 ### Características:
 - Exclusión de luces verdes simultáneas.
