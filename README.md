@@ -8,7 +8,7 @@ Cada práctica incluye el código fuente, documentación del diseño, capturas d
 
 ## 📂 Contenido del repositorio
 
-### 🔧 [Práctica 2 — Control básico de salidas digitales y aplicación avanzada con FSM](./Practica%202/)
+### 🔧 [Práctica 2 — Control básico de salidas digitales y aplicación avanzada con FSM](./Practica 2/)
 
 Esta práctica se divide en dos partes:
 - **Parte A**: Control secuencial de una matriz 3x3 de LEDs mediante tres botones físicos (modo espiral normal, inverso y reinicio).
@@ -18,7 +18,7 @@ Esta práctica se divide en dos partes:
 
 ---
 
-### 🖥️ [Práctica 3 — Diseño de interfaz gráfica para el control de salidas](./Practica%203/)
+### 🖥️ [Práctica 3 — Diseño de interfaz gráfica para el control de salidas](./Practica 3/)
 
 Esta práctica integra una **interfaz HMI STONE** conectada al Controllino Mega. A través de dos `spin_box`, el usuario puede modificar el duty cycle (PWM) de dos LEDs. El encendido y apagado de cada LED se realiza mediante botones físicos. Toda la lógica de interacción está gestionada en el microcontrolador.
 
