@@ -44,7 +44,7 @@ Simulación de dos semáforos perpendiculares que alternan el paso de forma coor
 ### Estados definidos:
 - A\_VERDE → A\_AMARILLO → B\_VERDE → B\_AMARILLO
 - La figura muestra la maquina de estados para esta parte
-- 
+- ![Maquina de estados para el semaforo](semaforo.jpg)
 
 ### Características:
 - Exclusión de luces verdes simultáneas.
