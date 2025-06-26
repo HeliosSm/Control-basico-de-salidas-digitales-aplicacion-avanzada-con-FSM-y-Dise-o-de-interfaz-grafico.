@@ -14,7 +14,7 @@ Esta práctica se divide en dos partes:
 - **Parte A**: Control secuencial de una matriz 3x3 de LEDs mediante tres botones físicos (modo espiral normal, inverso y reinicio).
 - **Parte B**: Simulación de un sistema de semáforos con lógica de Máquina de Estados Finita (FSM) no bloqueante.
 
-📁 Código y evidencia → [Ir a la carpeta Practica 2](./Practica%202/)
+📁 Código y evidencia → [Ir a la carpeta Practica 2](./Practica2/)
 
 ---
 
@@ -22,7 +22,7 @@ Esta práctica se divide en dos partes:
 
 Esta práctica integra una **interfaz HMI STONE** conectada al Controllino Mega. A través de dos `spin_box`, el usuario puede modificar el duty cycle (PWM) de dos LEDs. El encendido y apagado de cada LED se realiza mediante botones físicos. Toda la lógica de interacción está gestionada en el microcontrolador.
 
-📁 Código, interfaz y documentación → [Ir a la carpeta Practica 3](./Practica%203/)
+📁 Código, interfaz y documentación → [Ir a la carpeta Practica 3](./Practica3/)
 
 ---
 
